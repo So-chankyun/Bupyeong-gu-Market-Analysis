@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
+'''
+기초구역 경계에 인접한 도로의 정보와 그렇지 않은 도로의 정보를
+결합하는 코드이다.
+'''
 
 import pandas as pd
 import missingno as msno
@@ -22,8 +26,8 @@ essential_col = ['BAS_AR','BAS_ID','Ref','x1','y1','x2','y2','Con','IntHH','IntH
                  'IntTekl','IntTekl_R2','IntTekl_R3','IntTekl_R5','Line Lengt','geometry']
 
 # 필요 데이터 추출
-nnl_data = not_near_line[essential_col]
-nl_data = near_line[essential_col]
+nnl_data = not_near_line[essential_col] # not near line
+nl_data = near_line[essential_col] # near line
 
 # 컬럼명 변경
 nnl_data = nnl_data.rename(columns={'Line Lengt':'LL'})

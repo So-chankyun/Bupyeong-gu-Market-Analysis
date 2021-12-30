@@ -16,15 +16,15 @@ client_pw = 's82zIti8a9u7g6CzlEajqgcgHdIhwTfvh8pPXdJN'
 api_url = 'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query='
 
 # 주소 목록 파일
-apart_data = pd.read_csv('./data/전처리 파일/부평구 아파트 위치(위경도 포함).csv',encoding='utf-8')
-null_data = apart_data[apart_data['latitude'].isnull()]
-null_data.loc[:,'소재지지번주소'] = null_data.loc[:,'소재지지번주소'].apply(lambda x : x.split('-')[0])
+apart_data = pd.read_csv('../data/전처리 파일/아파트 가구수/부평구 아파트 위치(위경도 포함, null).csv',encoding='utf-8')
+# null_data = apart_data[apart_data['latitude'].isnull()]
+# null_data.loc[:,'소재지지번주소'] = null_data.loc[:,'소재지지번주소'].apply(lambda x : x.split('-')[0])
 
 # 네이버 지도 API 이용해서 위경도 찾기
 def find_position(addresses):
-    geo_coordi = []
+    # geo_coordi = []
     # data = addresses.tolist()
-    data = addresses
+    data = addresses.copy()
     for idx, row in data.iterrows():
         add_urlenc = parse.quote(row['소재지지번주소'])
         url = api_url + add_urlenc
@@ -69,10 +69,10 @@ def find_position(addresses):
     #                               "longitude":np_geo_coordi[:,1]})
 
     # result = addresses.merge(pd_geo_coordi, how='left', right_on='address', left_on='소재지지번주소')
-    # return pd_geo_coordi
-    apart_data.iloc[idx,10] = latitude
-    apart_data.iloc[idx, 11] = longitude
+    # return result
+        apart_data.iloc[idx,10] = latitude
+        apart_data.iloc[idx, 11] = longitude
 
     return apart_data
 
-find_position(null_data).to_csv('data/전처리 파일/부평구 아파트 위치(위경도 포함).csv', index = False)
+find_position(null_data).to_csv('../data/전처리 파일/아파트 가구수/부평구 아파트 위치(위경도 포함,not null).csv', index = False)
